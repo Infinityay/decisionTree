@@ -121,14 +121,16 @@ print("该决策树的最佳层数是：", max)
 penguin_tree = DecisionTreeClassifier(criterion='entropy',
                                       splitter='best',
                                       random_state=2022,
-                                      max_depth=max,
-                                      )
-
+                                      max_depth=max)
 penguin_tree.fit(x_train, y_train)
 
+# 返回预测的准确度
+print('训练集预测成功率:', penguin_tree.score(x_train, y_train))
+print('测试集预测成功率:', penguin_tree.score(x_test, y_test))
+
 # 画决策树
-feature_name = ['Island', 'Culmen Length (mm)', 'Culmen Depth (mm)',
-                'Flipper Length (mm)', 'Body Mass (g)', 'Sex', 'Age']
+feature_names = ['Island', 'Culmen Length (mm)', 'Culmen Depth (mm)',
+                 'Flipper Length (mm)', 'Body Mass (g)', 'Sex', 'Age']
 target_names = ['Adelie', 'Gentoo', 'Chinstrap']
 
 plot_feature_importances(penguin_tree.feature_importances_, 'Charcteristic importance',
@@ -136,7 +138,7 @@ plot_feature_importances(penguin_tree.feature_importances_, 'Charcteristic impor
                          normalize=False)
 
 dot_data = tree.export_graphviz(penguin_tree,
-                                feature_names=feature_name,
+                                feature_names=feature_names,
                                 class_names=target_names,
                                 out_file=None,
                                 filled=True)
@@ -144,11 +146,6 @@ dot_data = tree.export_graphviz(penguin_tree,
 graph = graphviz.Source(dot_data)
 
 graph.render("penguin_tree")
-
-# 返回预测的准确度
-
-print('训练集预测成功率:', penguin_tree.score(x_train, y_train))
-print('测试集预测成功率:', penguin_tree.score(x_test, y_test))
 
 # # 在训练集和测试集上分布利用训练好的模型进行预测
 # train_predict = penguin_tree.predict(x_train)
